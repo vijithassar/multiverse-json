@@ -2,6 +2,8 @@
 
 a lightweight specification for storing alternate versions of a document using JSON
 
+![space](header.png)
+
 # What is this?
 
 Writing existing as structured data instead of static text strings should in theory allow the content to be reused and repurposed without being rewritten or extensively edited. **Multiverse JSON** is an attempt to *store* linear writing in a *single nonlinear format*, such that it can be *compiled* into *multiple linear formats*.
