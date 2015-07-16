@@ -182,8 +182,9 @@ An example of what this would look like. (Note that this example omits the metad
   "root": {
       "something_useful": {
           "title": "This is something useful.",
-          "content": "Here's some actual content which will be imported with a reference into another part of the document
-          ."
+          "content": [
+            "Here's some actual content which will be imported with a reference into another part of the document."
+          ]
       },
       "references_example": {
           "title": "An Example of References",
@@ -228,7 +229,9 @@ References can be followed by optional recommended CSS selectors which the clien
 {
     "something_useful": {
         "title": "This is something useful.",
-        "content": "Here's some actual content which will be imported with a reference into another part of the document, with additional attributes appended."
+        "content": [
+          "Here's some actual content which will be imported with a reference into another part of the document, with additional attributes appended."
+        ]
     },
     "references_example": {
         "title": "An Example of References, with attributes",
@@ -250,7 +253,9 @@ Here's an example of references which will wrap the content in both CSS selector
   "root": {
     "something_useful": {
         "title": "This is something useful.",
-        "content": "Here's some actual content which will be imported with a reference into another part of the document."
+        "content": [
+          "Here's some actual content which will be imported with a reference into another part of the document."
+        ]
     },
     "references_example": {
         "title": "An Example of References",
