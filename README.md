@@ -227,8 +227,8 @@ Here's an example of what this would look like. (Note that this example omits th
           "title": "An Example of References",
           "content": [
               "<h3>This is how references work.</h3>",
-              "refer@root.something_useful.title",
-              "refer@root.something_useful.content"
+              "refer@something_useful.title",
+              "refer@something_useful.content"
           ]
       }
     }
@@ -264,6 +264,7 @@ References can be followed by optional recommended CSS selectors which the clien
 
 ```json
 {
+  "root": {
     "something_useful": {
         "title": "This is something useful.",
         "content": [
@@ -274,10 +275,11 @@ References can be followed by optional recommended CSS selectors which the clien
         "title": "An Example of References, with attributes",
         "content": [
             "<h3>This is how references work.</h3>",
-            "refer@root.something_useful.title #example-heading .title",
-            "refer@root.something_useful.content #example-content .body"
+            "refer@something_useful.title #example-heading .title",
+            "refer@something_useful.content #example-content .body"
         ]
     }
+  }
 }
 ```
 
@@ -298,8 +300,8 @@ Here's an example of references which will wrap the content in both CSS selector
         "title": "An Example of References",
         "content": [
             "<h3>This is how references work.</h3>",
-            "refer@root.something_useful.title #example-heading .title data-url='http://www.google.com' ng-click='executeSomeFunction'",
-            "refer@root.something_useful.content #example-content .body"
+            "refer@something_useful.title #example-heading .title data-url='http://www.google.com' ng-click='executeSomeFunction'",
+            "refer@something_useful.content #example-content .body"
         ]
     }
   }
