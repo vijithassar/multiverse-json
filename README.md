@@ -19,7 +19,7 @@ $ python multiverse.py content.json something_else
 
 Writing existing as structured data instead of static text strings should in theory allow the content to be reused and repurposed without being rewritten or extensively edited. **Multiverse JSON** is an attempt to *store* linear writing in a *single nonlinear format*, such that it can be *compiled* into *multiple linear formats*.
 
-It is a type of versioning, related in spirit to the "track changes" feature in Microsoft Word or even Git, but the goal is to enable parallel documents to exist in relation to one another. Git supports something along these lines through branches, but branches are largely secondary to the linear progression of commits. Other attempts at document versioning for writers, such as Microsoft Word's "track changes" feature, Mac OS X's Time Machine, and Draft do allow easy historical versioning for written material, but they do not provide simultaneous lateral versioning.
+It is a type of versioning, related in spirit to the "track changes" feature in Microsoft Word or even Git, but the goal is to enable parallel documents to exist in relation to one another, such as an essay alongside its summary or exhaustive product information alongside a small promotional brochure. Git supports something along these lines through branches, but branches are largely secondary to the linear progression of commits. Other attempts at document versioning for writers, such as Microsoft Word's "track changes" feature, Mac OS X's Time Machine, and Draft do allow easy historical versioning for written material, but they do not provide simultaneous lateral versioning.
 
 The syntax strives to be **simple and self evident**, because it began as an attempt to store software documentation and build it for audiences of different technical skill levels, and it seemed absurd for documentation to have its own documentation. Ideally you should be able to use it without referring back to this page much, if at all.
 
@@ -40,6 +40,8 @@ To compile the default version:
 ```bash
 # compile Multiverse JSON to default document
 $ python multiverse.py content.json
+# open the file that was just compiled
+$ open content_default.html
 ```
 
 To compile an alternate version:
@@ -47,6 +49,8 @@ To compile an alternate version:
 ```bash
 # compile Multiverse JSON to an alternate document called "shorter"
 $ python multiverse.py content.json shorter
+# open the file that was just compiled
+$ open content_shorter.html
 ```
 
 # Document Structure
@@ -98,7 +102,7 @@ This is the content dump. It should contain named keys, one for each logical uni
 
 ## Content Block
 
-What exactly consists a "logical unit" of content is up to you, it could be as large as an entire document or as small as an individual character. Neither of those is likely to be useful, though. There's likely a happy medium – paragraphs, pages, chapters, sections. It's up to you.
+What exactly is considered a "logical unit" of content is up to you; it could be as large as an entire document or as small as an individual character. Neither of those is likely to be useful, though. There's likely a happy medium – paragraphs, pages, chapters, sections, arguments, etc.
 
 ## Title
 
