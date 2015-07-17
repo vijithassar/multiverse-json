@@ -29,6 +29,24 @@ But, well, here we are. Just in case.
 
 The compilation script is nothing special, so Multiverse JSON barely qualifies as software; rather, it is a **set of conventions** (arguably a **specification**) for storing written content in small logical data chunks which allow adaptive output. It is largely agnostic to the actual data format and could be easily reimplemented with alternate storage mechanisms; the relationships are more important than the JSON file.
 
+# Compilation #
+
+Right now the compilation tool is a single Python script, but alternate compilers could be written in any language and you should feel free to implement integrated interpreters in your application. This format has the added benefit of making all content available as structured data, so for selective extraction you may never need to use a compiler at all.
+
+Document versions are described in the metadata section of the JSON file.
+
+To compile the default version:
+
+```bash
+$ python multiverse.py content.json
+```
+
+To compile an alternate version:
+
+```bash
+$ python multiverse.py content.json alternate_version
+```
+
 # Document Structure
 
 The JSON file should contain keys named "metadata" and "root."
@@ -39,7 +57,7 @@ This section must contain keys for "instructions" and "versions." You may also a
 
 ### Instructions
 
-This is a string which contains compilation instructions. Users should feel free to adjust the message, but compiled final products should always include an error message that explains to the reader how to generate alternate versions. (It's OK to hide or remove this message if the context requires it, just make sure to include it in the build.) **This field is required.**
+This is a string which contains human readable compilation instructions. Users should feel free to adjust the message, but compiled final products should always include an error message that explains to the reader how to generate alternate versions. (It's OK to hide or remove this message if the context requires it, just make sure to initially include it in the build.) **This field is required.**
 
 ### Versions
 
