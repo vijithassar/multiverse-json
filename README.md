@@ -4,6 +4,17 @@ a lightweight specification for storing alternate versions of a document using J
 
 ![space](header.png)
 
+# TL;DR
+
+Write your content into JSON, split into whatever you decide are sensible subsections. Run the python script to compile those subsections into a single document. Define different ways of compiling, if you want.
+
+```bash
+# compile the default version
+$ python multiverse.py content.json
+# compile another version
+$ python multiverse.py content.json something_else
+```
+
 # What is this?
 
 Writing existing as structured data instead of static text strings should in theory allow the content to be reused and repurposed without being rewritten or extensively edited. **Multiverse JSON** is an attempt to *store* linear writing in a *single nonlinear format*, such that it can be *compiled* into *multiple linear formats*.
@@ -16,7 +27,7 @@ But, well, here we are. Just in case.
 
 # What **isn't** this?
 
-The build script is nothing special, so Multiverse JSON barely qualifies as software; rather, it is a **set of conventions** (arguably a **specification**) for storing written content in small logical data chunks which allow adaptive output. It is largely agnostic to the actual data format and could be easily reimplemented with alternate storage mechanisms; the relationships are more important than the JSON file.
+The compilation script is nothing special, so Multiverse JSON barely qualifies as software; rather, it is a **set of conventions** (arguably a **specification**) for storing written content in small logical data chunks which allow adaptive output. It is largely agnostic to the actual data format and could be easily reimplemented with alternate storage mechanisms; the relationships are more important than the JSON file.
 
 # Document Structure
 
@@ -163,7 +174,7 @@ Let's add a variant to the above example:
 ```
 
 
-It is also possible for variants to contain variants, but in those cases you are highly encouraged to rethink the logical structure and titles of your piece, because otherwise you are mandating that all downstream JSON clients build, test, and debug recursive functions for retrieving content, e.g. an inner get_content_variant() running recursively inside an outer get_content_variant() or similar.
+It is also possible for variants to contain variants, but in those cases you are highly encouraged to rethink the logical structure and titles of your piece, because otherwise you are mandating that all downstream JSON clients build, test, and debug deeper recursive functions for retrieving content, e.g. an inner get_content_variant() running recursively inside an outer get_content_variant() or similar.
 
 In other words: variants are fine, and necessary, but in general a shallower tree structure will be more flexible, easier to read, and less prone to compile errors.
 
@@ -177,7 +188,7 @@ So far all we have done is embed HTML in a JSON file, which is only minimal prog
 
 We solve this problem by designating "refer@" as a reserved keyword at the beginning of strings. If that text appears at the beginning of a string in a content array, that string should instead be interpreted as an instruction to retrieve a piece of text or HTML defined elsewhere in the data file, the precise location of which is described in traditional JavaScript dot notation. The compilation tool or other client renderer should be designed to interpret each of these strings as an instruction to look up the corresponding information and render it just as it would any other regular string.
 
-An example of what this would look like. (Note that this example omits the metadata section for clarity.)
+Here's an example of what this would look like. (Note that this example omits the metadata section for clarity.)
 
 ```json
 {
@@ -225,7 +236,7 @@ The use of references also allows for the establishment of default values among 
 
 ## Reference Attributes
 
-References can be followed by optional recommended CSS selectors which the client or build tool is free to ignore. This is especially useful in conjunction with something like Twitter Bootstrap, which allows styling from CSS classes (e.g. class="h5") to override conflicting DOM tags (e.g. &lt;h5&gt;) – that is, you can make literally any element look like an h5 if you simply add that class to it.
+References can be followed by optional recommended CSS selectors which the client or compile tool is free to ignore. This is especially useful in conjunction with something like Twitter Bootstrap, which allows styling from CSS classes (e.g. class="h5") to override conflicting DOM tags (e.g. &lt;h5&gt;) – that is, you can make literally any element look like an h5 if you simply add that class to it.
 
 ```json
 {
@@ -271,7 +282,7 @@ Here's an example of references which will wrap the content in both CSS selector
 }
 ```
 
-Readability and syntactic clarity are major goals for this JSON file, so it is absolutely the responsibility of the renderer or build tool to examine the first character of the additional attribute and allow the shorthand. Don't skip this when writing your renderer! It will help your users, readers, and developers a lot! Additional attributes around references should in most cases be rendered with a span tag instead of a div, so as to not introduce any unexpected line breaks. If you do need a block level element, it should be provided by the renderer, build tool, styling, or default order markup, not introduced by the use of reference syntax in the data file. **The use of limited scope structural markup, most notably p tags, will limit the visibility of unwanted inline rendering caused by using spans instead of divs for reference attribute shorthand.**
+Readability and syntactic clarity are major goals for this JSON file, so it is absolutely the responsibility of the renderer or compilation tool to examine the first character of the additional attribute and allow the shorthand. Don't skip this when writing your renderer! It will help your users, readers, and developers a lot! Additional attributes around references should in most cases be rendered with a span tag instead of a div, so as to not introduce any unexpected line breaks. If you do need a block level element, it should be provided by the renderer, compilation tool, styling, or default order markup, not introduced by the use of reference syntax in the data file. **The use of limited scope structural markup, most notably p tags, will limit the visibility of unwanted inline rendering caused by using spans instead of divs for reference attribute shorthand.**
 
 Note the slight difference here between the compilation tool and other client applications: the compilation tool *should support the attribute shorthand* to encourage syntactic clarity when the data file is being written. However, other client applications beyond the compilation tool are *still free to ignore those attributes* because the data source can't reasonably expect to mandate implementation for every possible use case.
 
@@ -279,7 +290,7 @@ Additional attributes need only need to be inserted around references, not the o
 
 ## Reference Recursion
 
-References are resolved through string analysis, so the simplest way to write a renderer or build tool that supports them is with a recursive function that calls itself again when it detects a reference which needs to be resolved. If you'd like to cleanly separate your retrieval of content objects and their rendering into HTML strings, feel free to do some heavy handed array splicing. Consider, though, that this specification technically allows for infinite redirecting of content using these references, for which a truly recursive function is actually probably a more robust solution, albeit possibly a bit off-putting architecturally.
+References are resolved through string analysis, so the simplest way to write a renderer or compilation tool that supports them is with a recursive function that calls itself again when it detects a reference which needs to be resolved. If you'd like to cleanly separate your retrieval of content objects and their rendering into HTML strings, feel free to do some heavy handed array splicing. Consider, though, that this specification technically allows for infinite redirecting of content using these references, for which a truly recursive function is actually probably a more robust solution, albeit possibly a bit off-putting architecturally.
 
 For maximum flexibility, references point specifically to title and content, not to the parent key representing the overall piece of content, because otherwise it would be unclear whether the compiled references should include the title as a section header.
 
@@ -289,16 +300,16 @@ There's an important compromise happening here: documents are by their nature st
 
 # Best Practices
 
-It's important to explain this system system within the finished content build; again, the goal is to prevent users from ever having to view this page. This is tricky, because we need this to a) validate b) be readable in unrendered JSON/code form c) be readable after rendering and d) not require a rendering/build stage. These are mutually exclusive, especially when you consider that JSON requires literal newlines. So instead, we'll punt on this problem entirely, and write detailed instructions as plaintext comments in the Python source code, then leave clues to the user instructing them to open that file if they want to read the detailed compilation instructions.
+It's important to explain this system system within the finished content build; again, the goal is to prevent users from ever having to view this page. This is tricky, because we need this to a) validate b) be readable in unrendered JSON/code form c) be readable after rendering and d) not themselves require a rendering/compilation stage in order to be usable. These are mutually exclusive, especially when you consider that JSON requires literal newlines. So instead, we'll punt on this problem entirely, and write detailed instructions as plaintext comments in the Python source code, then leave clues to the user instructing them to open that file if they want to read the detailed compilation instructions.
 
 Specifically, best practices include:
 
-1. The Python build script should include *extremely detailed* instructions in comments located at the *very top of the file* which explain the exact terminal commands used to update the JSON file and run the build task. Remember that these instructions may one day be read by someone who just wants to understand how to use the application, and has never touched Python, JSON, nor the command line. Be extremely verbose.
+1. The Python compilation script should include *extremely detailed* instructions in comments located at the *very top of the file* which explain the exact terminal commands used to update the JSON file and run the compilation task. Remember that these instructions may one day be read by someone who just wants to understand how to use the application, and has never touched Python, JSON, nor the command line. Be extremely verbose.
 
 1. The data file's "metadata" key should also contain a property called "instructions" which briefly explains how to open the compilation script and find the more detailed instructions in the Python script comments. This should just be a brief pointer, again because JSON doesn't support newlines, so readability of multiline content will always be compromised either in JSON or in the rendered HTML. Don't overthink this one.
 
-1. The instructions property in the content object should be appended by the build script in readable form to the finished HTML build. Be sure to give it a class so it can be easily hidden or removed by CSS or JavaScript downstream.
+1. The instructions property in the content object should be appended by the compilation script in readable form to the finished HTML build. Be sure to give it a class so it can be easily hidden or removed by CSS or JavaScript downstream.
 
-1. In many cases it may be desirable to avoid shipping pre-built HTML. In these cases we should instead ship a blank index.html or README.md or similar which contains only the "instructions" property from the JSON object's metadata key. More technical users can be trusted to run the builds themselves if the instructions written at the top of the build script are friendly enough.
+1. In many cases it may be desirable to avoid shipping pre-built HTML. In these cases we should instead ship a blank index.html or README.md or similar which contains only the "instructions" property from the JSON object's metadata key. More technical users can be trusted to run the builds themselves if the instructions written at the top of the compilation script are friendly enough.
 
-1. The build script should end successful builds by printing a message to the terminal window which includes the specific names of the input and output files and tells users specifically where to read their newly built or rebuilt document.
+1. The compilation script should end successful builds by printing a message to the terminal window which includes the specific names of the input and output files and tells users specifically where to read their newly built or rebuilt document.
