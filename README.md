@@ -326,7 +326,7 @@ There's an important compromise happening here: documents are by their nature st
 
 # Best Practices
 
-It's important to explain this system system within the finished content build; again, the goal is to prevent users from ever having to view this page. This is tricky, because we need this to a) validate b) be readable in unrendered JSON/code form c) be readable after rendering and d) not themselves require a rendering/compilation stage in order to be usable. These are mutually exclusive, especially when you consider that JSON requires literal newlines. So instead, we'll punt on this problem entirely, and write detailed instructions as plaintext comments in the Python source code, then leave clues to the user instructing them to open that file if they want to read the detailed compilation instructions.
+It's important to explain this system system within the finished content build; again, the goal is to prevent users from ever having to view this page. This is tricky, because we need these compilation instructions to a) validate b) be readable in unrendered JSON/code form c) be readable after rendering and d) not themselves require a rendering/compilation stage in order to be usable. These are mutually exclusive, especially when you consider that JSON requires literal newlines. So instead, we'll punt on this problem entirely, and write detailed instructions as plaintext comments in the Python source code, then leave clues to the user instructing them to open that file if they want to read the detailed compilation instructions.
 
 Specifically, best practices include:
 
