@@ -38,13 +38,15 @@ Document versions are described in the metadata section of the JSON file.
 To compile the default version:
 
 ```bash
+# compile Multiverse JSON to default document
 $ python multiverse.py content.json
 ```
 
 To compile an alternate version:
 
 ```bash
-$ python multiverse.py content.json alternate_version
+# compile Multiverse JSON to an alternate document called "shorter"
+$ python multiverse.py content.json shorter
 ```
 
 # Document Structure
