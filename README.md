@@ -6,7 +6,7 @@ a lightweight specification for storing alternate versions of a document using J
 
 # TL;DR
 
-Write your content into JSON, split into whatever you decide are sensible subsections. Run the python script to compile those subsections into a single document. Define different ways of compiling, if you want.
+Write your content into JSON, split into whatever you decide are sensible subsections. Run the python script to compile those subsections into a single document. Define different ways of compiling, if you want. [Choose Your Own Adventure](https://www.wikiwand.com/en/Choose_Your_Own_Adventure) with a JSON backend, basically.
 
 ```bash
 # compile the default version
